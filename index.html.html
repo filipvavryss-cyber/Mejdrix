@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mejdrix App</title>
+<style>
+:root{--bg:#f4f2fa;--card:#fff;--text:#1a1530;--muted:#6a6485;--accent:#6d4aff;--accent2:#e04fa0;--line:#e7e3f3;--soft:#efeaff;--ok:#16a34a;--warn:#d97706;--bad:#dc2626;--sh:0 4px 18px rgba(60,40,120,.08);--fs:16px;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#120f1e;--card:#1c1730;--text:#f0ecff;--muted:#a199c2;--line:#30294a;--soft:#2a2248;--sh:none;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#120f1e;--card:#1c1730;--text:#f0ecff;--muted:#a199c2;--line:#30294a;--soft:#2a2248;--sh:none;color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px);font-size:var(--fs);overflow-x:hidden}
+body{margin:0;width:100%;overflow-x:hidden;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;line-height:1.55}
+svg.i{width:1.15em;height:1.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.2em;flex:none}
+.wrap{width:100%;max-width:720px;margin:0 auto;padding:0 16px}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 0 10px}
+.prof{display:flex;align-items:center;gap:12px}
+.av{width:48px;height:48px;border-radius:50%;object-fit:cover;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;flex:none;border:2px solid var(--card);box-shadow:var(--sh)}
+.pn{font-weight:800;font-size:1.05rem;line-height:1.2}
+.ps{color:var(--muted);font-size:.8rem}
+.bell{position:relative;background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:50%;width:44px;height:44px;padding:0;box-shadow:var(--sh)}
+.badge{position:absolute;top:-5px;right:-5px;background:var(--accent2);color:#fff;font-size:.7rem;font-weight:800;min-width:20px;height:20px;border-radius:10px;display:flex;align-items:center;justify-content:center;padding:0 5px}
+.hero{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-radius:22px;padding:24px 22px;box-shadow:var(--sh)}
+.hero h1{margin:0;font-size:clamp(1.5rem,5.5vw,2rem);line-height:1.15}
+.hero p{margin:6px 0 0;opacity:.92}
+nav{display:flex;gap:6px;flex-wrap:wrap;padding:14px 0 6px}
+nav a{display:flex;align-items:center;gap:6px;padding:8px 13px;border-radius:999px;color:var(--muted);text-decoration:none;font-weight:600;font-size:.9rem;background:var(--card);border:1px solid var(--line)}
+nav a.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+main{padding:4px 0 36px}
+h2{font-size:1.2rem;margin:18px 0 12px;display:flex;align-items:center;gap:8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:14px;box-shadow:var(--sh)}
+.pad{padding:16px}
+.card h3{margin:0 0 4px;font-size:1.05rem}
+.card p{margin:4px 0 10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.meta{color:var(--muted);font-size:.82rem}
+.big{display:block;position:relative;aspect-ratio:16/9;background:#000}
+.big img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:44px;border-radius:13px;background:#f00;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.25rem}
+.vrow{display:flex;gap:14px;padding:14px;align-items:flex-start}
+.vth{position:relative;width:132px;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#1f1147,var(--accent));flex:none}
+.vth img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .2s}
+.vth .play{width:42px;height:30px;border-radius:9px;font-size:.95rem}
+.vb{flex:1}
+.btn{display:inline-flex;align-items:center;gap:7px;background:var(--soft);color:var(--accent);padding:8px 14px;border-radius:11px;font-weight:700;font-size:.88rem;text-decoration:none;margin:2px 0 8px}
+.tag{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;font-weight:700;padding:3px 10px;border-radius:999px;background:var(--soft);color:var(--accent);margin-bottom:6px}
+.tag.d{background:#fee2e2;color:var(--bad)}.tag.w{background:#fef3c7;color:var(--warn)}.tag.ok{background:#dcfce7;color:var(--ok)}
+.note{padding:14px 16px;border-left:4px solid var(--accent)}
+.note.w{border-color:var(--warn)}.note.d{border-color:var(--bad)}.note.ok{border-color:var(--ok)}
+.note.new{background:var(--soft)}
+.empty{color:var(--muted);text-align:center;padding:30px 10px;background:var(--card);border:1px dashed var(--line);border-radius:18px;margin-bottom:14px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:6px 0 14px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;text-align:center;box-shadow:var(--sh);color:var(--muted);font-size:.88rem}
+.stat b{display:block;font-size:1.7rem;color:var(--accent)}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:10px 16px;background:var(--accent);color:#fff;font-weight:700;display:inline-flex;align-items:center;gap:8px;justify-content:center}
+button.ghost{background:transparent;color:var(--muted);border:1px solid var(--line)}
+button.del{background:var(--bad);padding:6px 12px;font-size:.85rem}
+input,textarea,select{font:inherit;width:100%;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--text);margin-bottom:10px}
+input[type=file]{padding:8px}
+.set{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.set:first-child{border-top:0}
+.seg{display:flex;gap:4px;background:var(--soft);padding:4px;border-radius:12px}
+.seg button{background:transparent;color:var(--muted);padding:6px 11px;font-size:.84rem}
+.seg button.on{background:var(--accent);color:#fff}
+.admin{border:2px dashed var(--accent);border-radius:18px;padding:16px;margin-bottom:18px;background:var(--card)}
+.admin h3{margin:16px 0 8px}
+.msg{font-size:.9rem;color:var(--accent2);min-height:1.3em;margin-top:8px;font-weight:600}
+.item{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.pv{width:72px;height:72px;border-radius:50%;object-fit:cover;margin-bottom:10px;display:block}
+footer{text-align:center;padding:10px 16px 34px;color:var(--muted);font-size:.85rem}
+.lock{max-width:320px;margin:12px auto 0;text-align:left}
+@media (max-width:480px){.vrow{flex-direction:column}.vth{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="bar"><div class="prof" id="prof"></div><button class="bell" id="bell" aria-label="Upozornění"></button></div>
+  <section class="hero"><h1 id="h1"></h1><p id="h1p"></p></section>
+  <nav id="nav"></nav>
+  <main id="app"></main>
+</div>
+<footer>
+  <div>Mejdrix App</div>
+  <div id="lockArea"></div>
+</footer>
+
+<script type="application/json" id="state">{"rev":0,"profile":{"name":"","photo":""},"hero":{"title":"Mejdrix App","sub":"Novinky, upozornění a všechno důležité na jednom místě."},"about":"","news":[],"notes":[]}</script>
+<script>
+(function(){
+  var CODE="140514";
+  var state=JSON.parse(document.getElementById("state").textContent);
+  function ls(k,d){try{var v=localStorage.getItem(k);return v===null?d:JSON.parse(v);}catch(e){return d;}}
+  function ss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  var admin=ls("mx_admin",false), msg="", showLock=false, newsImg="", profPhoto=null;
+  if(admin){var dr=ls("mx_draft",null);if(dr&&dr.rev>=state.rev)state=dr;}
+  var app=document.getElementById("app");
+  var P={home:"M3 11l9-8 9 8v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z",news:"M4 4h13a2 2 0 0 1 2 2v14H6a2 2 0 0 1-2-2zM19 8h2v10a2 2 0 0 1-2 2M8 8h7M8 12h7M8 16h4",bell:"M6 8a6 6 0 0 1 12 0c0 7 3 8 3 8H3s3-1 3-8M10 21a2 2 0 0 0 4 0",gear:"M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6M19 12a7 7 0 0 0-.1-1.3l2-1.5-2-3.4-2.3 1a7 7 0 0 0-2.2-1.3L14 3h-4l-.4 2.5a7 7 0 0 0-2.2 1.3l-2.3-1-2 3.4 2 1.5a7 7 0 0 0 0 2.6l-2 1.5 2 3.4 2.3-1a7 7 0 0 0 2.2 1.3L10 21h4l.4-2.5a7 7 0 0 0 2.2-1.3l2.3 1 2-3.4-2-1.5c.1-.4.1-.9.1-1.3",info:"M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20M12 16v-4M12 8h.01",lock:"M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4",link:"M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1",play:"M6 4l14 8-14 8z",trash:"M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3",check:"M5 13l4 4L19 7",alert:"M12 3l10 18H2zM12 10v5M12 18h.01",plus:"M12 5v14M5 12h14",user:"M20 21a8 8 0 0 0-16 0M12 13a4 4 0 1 0 0-8 4 4 0 0 0 0 8"};
+  function ic(n){return '<svg class="i" viewBox="0 0 24 24"><path d="'+P[n]+'"/></svg>';}
+  function ytId(u){var m=String(u||"").match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([A-Za-z0-9_-]{11})/);return m?m[1]:null;}
+  function el(t,p,k){var e=document.createElement(t);for(var a in (p||{})){if(a==="text")e.textContent=p[a];else if(a==="html")e.innerHTML=p[a];else if(a==="class")e.className=p[a];else if(a.indexOf("on")===0)e.addEventListener(a.slice(2),p[a]);else e.setAttribute(a,p[a]);}(k||[]).forEach(function(c){if(c)e.appendChild(c);});return e;}
+  var set=ls("mx_set",{theme:"auto",size:"m"}), read=ls("mx_read",[]);
+
+  function toData(file,max,square,cb){
+    var fr=new FileReader();
+    fr.onload=function(){var im=new Image();im.onload=function(){
+      var sx=0,sy=0,sw=im.width,sh=im.height;
+      if(square){var s=Math.min(sw,sh);sx=(im.width-s)/2;sy=(im.height-s)/2;sw=s;sh=s;}
+      var sc=Math.min(1,max/sw),cw=Math.round(sw*sc),ch=Math.round(sh*sc);
+      var c=document.createElement("canvas");c.width=cw;c.height=ch;
+      c.getContext("2d").drawImage(im,sx,sy,sw,sh,0,0,cw,ch);
+      cb(c.toDataURL("image/jpeg",0.78));
+    };im.src=fr.result;};
+    fr.readAsDataURL(file);
+  }
+  function applySet(){
+    var r=document.documentElement;
+    if(set.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",set.theme);
+    r.style.setProperty("--fs",{s:"14px",m:"16px",l:"18px"}[set.size]||"16px");
+  }
+  function unread(){return state.notes.filter(function(n){return read.indexOf(n.id)<0;});}
+  function route(){var h=(location.hash||"#domu").slice(1);return ["domu","novinky","upozorneni","o-nas","nastaveni","admin"].indexOf(h)>=0?h:"domu";}
+
+  function drawChrome(){
+    document.getElementById("h1").textContent=state.hero.title;
+    var hp=document.getElementById("h1p");hp.textContent=state.hero.sub||"";hp.style.display=state.hero.sub?"":"none";
+    var pf=document.getElementById("prof");pf.textContent="";
+    var pr=state.profile||{};
+    if(pr.photo)pf.appendChild(el("img",{class:"av",src:pr.photo,alt:pr.name||"Profil"}));
+    else pf.appendChild(el("div",{class:"av",text:pr.name?pr.name.charAt(0).toUpperCase():"M"}));
+    pf.appendChild(el("div",{},[el("div",{class:"pn",text:pr.name||"Mejdrix App"}),pr.name?el("div",{class:"ps",text:"Správce aplikace"}):null]));
+    var b=document.getElementById("bell");b.innerHTML=ic("bell");
+    var u=unread().length;if(u)b.appendChild(el("span",{class:"badge",text:String(u)}));
+    var r=route(),nav=document.getElementById("nav");nav.textContent="";
+    var items=[["domu","home","Domů"],["novinky","news","Novinky"],["upozorneni","bell","Upozornění"],["o-nas","info","O nás"],["nastaveni","gear","Nastavení"]];
+    if(admin)items.push(["admin","lock","Admin"]);
+    items.forEach(function(x){nav.appendChild(el("a",{href:"#"+x[0],class:r===x[0]?"on":"",html:ic(x[1])+" "+x[2]}));});
+    var la=document.getElementById("lockArea");la.textContent="";
+    if(!admin){
+      la.appendChild(el("button",{class:"ghost",style:"margin-top:12px",html:ic("lock")+" Správce",onclick:function(){showLock=!showLock;drawChrome();}}));
+      if(showLock){
+        var inp=el("input",{type:"password",inputmode:"numeric",placeholder:"Zadej kód správce",autocomplete:"off"});
+        var out=el("div",{class:"msg"});
+        var go=function(){if(inp.value===CODE){admin=true;showLock=false;ss("mx_admin",true);location.hash="#admin";render();}else{out.textContent="Špatný kód.";inp.value="";}};
+        inp.addEventListener("keydown",function(e){if(e.key==="Enter")go();});
+        la.appendChild(el("div",{class:"lock"},[inp,el("button",{text:"Odemknout",onclick:go,style:"width:100%"}),out]));
+      }
+    }
+  }
+
+  function linkBtn(n,id){return n.url?el("a",{class:"btn",href:n.url,target:"_blank",rel:"noopener",html:ic(id?"play":"link")+" "+(id?"Přehrát na YouTube":"Otevřít odkaz")}):null;}
+  function newsCard(n){
+    var id=ytId(n.url);
+    var info=[el("h3",{text:n.title}),n.text?el("p",{text:n.text}):null,linkBtn(n,id),el("div",{class:"meta",text:n.date})];
+    if(n.img){
+      var big=el(n.url?"a":"div",n.url?{class:"big",href:n.url,target:"_blank",rel:"noopener"}:{class:"big"},[el("img",{src:n.img,alt:n.title}),id?el("div",{class:"play",html:ic("play")}):null]);
+      return el("div",{class:"card"},[big,el("div",{class:"pad"},info)]);
+    }
+    if(id){
+      var im=el("img",{src:"https://img.youtube.com/vi/"+id+"/hqdefault.jpg",alt:""});
+      im.addEventListener("load",function(){im.style.opacity=1;});
+      im.addEventListener("error",function(){im.remove();});
+      return el("div",{class:"card"},[el("div",{class:"vrow"},[el("a",{class:"vth",href:n.url,target:"_blank",rel:"noopener"},[im,el("div",{class:"play",html:ic("play")})]),el("div",{class:"vb"},info)])]);
+    }
+    return el("div",{class:"card"},[el("div",{class:"pad"},info)]);
+  }
+  var TL={info:"Informace",ok:"Dobrá zpráva",w:"Pozor",d:"Důležité"},TI={info:"info",ok:"check",w:"alert",d:"alert"};
+  function noteCard(n){
+    var cls=n.type==="info"?"":n.type,isNew=read.indexOf(n.id)<0;
+    return el("div",{class:"card note "+cls+(isNew?" new":"")},[el("span",{class:"tag "+cls,html:ic(TI[n.type]||"info")+" "+(TL[n.type]||"Informace")+(isNew?" · nové":"")}),el("h3",{text:n.title}),n.text?el("p",{text:n.text,style:"margin:0 0 6px"}):null,el("div",{class:"meta",text:n.date})]);
+  }
+  function h2(icon,t){return el("h2",{html:ic(icon)+" "+t});}
+  function seg(opts,cur,fn){return el("div",{class:"seg"},opts.map(function(o){return el("button",{class:cur===o[0]?"on":"",text:o[1],onclick:function(){fn(o[0]);}});}));}
+  function empty(t){return el("div",{class:"empty",text:t});}
+
+  function view(){
+    var r=route(),f=document.createDocumentFragment();
+    if(r==="domu"){
+      f.appendChild(el("div",{class:"stats"},[el("div",{class:"stat"},[el("b",{text:String(state.news.length)}),document.createTextNode("novinek")]),el("div",{class:"stat"},[el("b",{text:String(unread().length)}),document.createTextNode("nových upozornění")])]));
+      if(state.notes[0])f.appendChild(noteCard(state.notes[0]));
+      f.appendChild(h2("news","Nejnovější novinky"));
+      if(!state.news.length)f.appendChild(empty("Zatím tu nejsou žádné novinky."));
+      state.news.slice(0,3).forEach(function(n){f.appendChild(newsCard(n));});
+    }else if(r==="novinky"){
+      f.appendChild(h2("news","Všechny novinky"));
+      if(!state.news.length)f.appendChild(empty("Zatím tu nejsou žádné novinky."));
+      state.news.forEach(function(n){f.appendChild(newsCard(n));});
+    }else if(r==="upozorneni"){
+      f.appendChild(h2("bell","Upozornění"));
+      if(unread().length)f.appendChild(el("button",{class:"ghost",style:"margin-bottom:14px",html:ic("check")+" Označit vše jako přečtené",onclick:function(){read=state.notes.map(function(n){return n.id;});ss("mx_read",read);render();}}));
+      if(!state.notes.length)f.appendChild(empty("Žádná upozornění."));
+      state.notes.forEach(function(n){f.appendChild(noteCard(n));});
+    }else if(r==="o-nas"){
+      f.appendChild(h2("info","O aplikaci"));
+      f.appendChild(state.about?el("div",{class:"card pad"},[el("p",{text:state.about,style:"margin:0"})]):empty("Zatím tu nic není."));
+    }else if(r==="nastaveni"){
+      f.appendChild(h2("gear","Nastavení"));
+      f.appendChild(el("div",{class:"card pad"},[
+        el("div",{class:"set"},[el("div",{},[el("b",{text:"Vzhled"}),el("div",{class:"meta",text:"Světlý, tmavý nebo podle zařízení"})]),seg([["auto","Auto"],["light","Světlý"],["dark","Tmavý"]],set.theme,function(v){set.theme=v;ss("mx_set",set);render();})]),
+        el("div",{class:"set"},[el("div",{},[el("b",{text:"Velikost textu"}),el("div",{class:"meta",text:"Pro pohodlnější čtení"})]),seg([["s","Malý"],["m","Střední"],["l","Velký"]],set.size,function(v){set.size=v;ss("mx_set",set);render();})]),
+        el("div",{class:"set"},[el("div",{},[el("b",{text:"Přečtená upozornění"}),el("div",{class:"meta",text:"Vrátí odznak u zvonečku"})]),el("button",{class:"ghost",text:"Obnovit",onclick:function(){read=[];ss("mx_read",read);render();}})])
+      ]));
+      f.appendChild(el("div",{class:"meta",text:"Nastavení se ukládá jen v tomto zařízení."}));
+    }else if(r==="admin"){
+      f.appendChild(admin?adminPanel():empty("Sekce je jen pro správce."));
+    }
+    return f;
+  }
+
+  function adminPanel(){
+    var out=el("div",{class:"msg",text:msg});
+    var pn=el("input",{placeholder:"Tvoje jméno"});pn.value=(state.profile&&state.profile.name)||"";
+    var pv=el("img",{class:"pv",alt:""});pv.style.display="none";
+    var cur=state.profile&&state.profile.photo;if(cur){pv.src=cur;pv.style.display="block";}
+    var pf=el("input",{type:"file",accept:"image/*"});
+    pf.addEventListener("change",function(){if(pf.files[0])toData(pf.files[0],200,true,function(d){profPhoto=d;pv.src=d;pv.style.display="block";});});
+    var ht=el("input",{placeholder:"Hlavní nadpis"}),hs=el("input",{placeholder:"Podnadpis"});ht.value=state.hero.title;hs.value=state.hero.sub||"";
+    var ab=el("textarea",{rows:"5",placeholder:"Text O nás"});ab.value=state.about||"";
+    var nt=el("input",{placeholder:"Nadpis upozornění"}),nx=el("textarea",{rows:"2",placeholder:"Text upozornění"});
+    var ns=el("select");[["info","Informace"],["ok","Dobrá zpráva"],["w","Pozor"],["d","Důležité"]].forEach(function(o){ns.appendChild(el("option",{value:o[0],text:o[1]}));});
+    var t=el("input",{placeholder:"Nadpis novinky"}),x=el("textarea",{rows:"3",placeholder:"Text novinky (nepovinné)"}),u=el("input",{placeholder:"Odkaz na YouTube nebo jiný web (nepovinné)"});
+    var ni=el("input",{type:"file",accept:"image/*"}),nis=el("div",{class:"meta",text:"Obrázek je nepovinný. Bez něj se zkusí načíst náhled z YouTube."});
+    ni.addEventListener("change",function(){if(ni.files[0])toData(ni.files[0],720,false,function(d){newsImg=d;nis.textContent="Obrázek připraven.";});});
+    var today=function(){return new Date().toLocaleDateString("cs-CZ");};
+    return el("div",{class:"admin"},[
+      h2("lock","Správa aplikace"),
+      el("h3",{text:"Můj profil"}),pv,pn,pf,
+      el("button",{html:ic("check")+" Uložit profil",style:"margin-top:10px",onclick:function(){state.profile={name:pn.value.trim(),photo:profPhoto||(state.profile&&state.profile.photo)||""};save("Profil uložen.");}}),
+      el("h3",{text:"Přidat novinku"}),t,x,u,ni,nis,
+      el("button",{html:ic("plus")+" Přidat novinku",style:"margin-top:10px",onclick:function(){
+        if(!t.value.trim()){out.textContent="Zadej nadpis novinky.";return;}
+        var l=u.value.trim();if(l&&!/^https?:\/\//i.test(l)){out.textContent="Odkaz musí začínat https://";return;}
+        state.news.unshift({id:Date.now(),title:t.value.trim(),text:x.value.trim(),url:l,img:newsImg,date:today()});newsImg="";save("Novinka přidána.");}}),
+      el("h3",{text:"Přidat upozornění"}),nt,nx,ns,
+      el("button",{html:ic("plus")+" Přidat upozornění",onclick:function(){
+        if(!nt.value.trim()){out.textContent="Zadej nadpis upozornění.";return;}
+        state.notes.unshift({id:Date.now(),title:nt.value.trim(),text:nx.value.trim(),type:ns.value,date:today()});save("Upozornění přidáno.");}}),
+      el("h3",{text:"Texty aplikace"}),ht,hs,ab,
+      el("button",{text:"Uložit texty",onclick:function(){state.hero.title=ht.value.trim()||state.hero.title;state.hero.sub=hs.value.trim();state.about=ab.value.trim();save("Texty uloženy.");}}),
+      out,
+      state.news.length?el("h3",{text:"Správa novinek"}):null,
+      el("div",{},state.news.map(function(n){return el("div",{class:"item"},[el("span",{text:n.title}),el("button",{class:"del",html:ic("trash")+" Smazat",onclick:function(){state.news=state.news.filter(function(q){return q.id!==n.id;});save("Novinka smazána.");}})]);})),
+      state.notes.length?el("h3",{text:"Správa upozornění"}):null,
+      el("div",{},state.notes.map(function(n){return el("div",{class:"item"},[el("span",{text:n.title}),el("button",{class:"del",html:ic("trash")+" Smazat",onclick:function(){state.notes=state.notes.filter(function(q){return q.id!==n.id;});save("Upozornění smazáno.");}})]);})),
+      el("div",{style:"margin-top:16px"},[el("button",{class:"ghost",text:"Odhlásit správce",onclick:function(){admin=false;ss("mx_admin",false);location.hash="#domu";render();}})])
+    ]);
+  }
+
+  async function save(ok){
+    state.rev=(state.rev||0)+1;profPhoto=null;
+    ss("mx_draft",state);
+    msg=ok+" Uloženo v tomto zařízení.";render();
+    try{
+      var a=await claude.use("artifact");
+      if(!a){msg=ok+" Uloženo v tomto zařízení. Ostatním se ukáže, až změnu uděláš na publikované stránce jako majitel.";render();return;}
+      var c=document.documentElement.cloneNode(true);
+      ["#app","#nav","#lockArea","#h1","#h1p","#bell","#prof"].forEach(function(s){c.querySelector(s).textContent="";});
+      c.removeAttribute("style");c.removeAttribute("data-theme");
+      c.querySelector("#state").textContent=JSON.stringify(state).replace(/</g,"\\u003c");
+      await a.publish("<!doctype html>\n"+c.outerHTML);
+    }catch(e){
+      msg=ok+" Uloženo v tomto zařízení, ale zveřejnění se nepovedlo ("+((e&&(e.code||e.message))||"chyba")+").";render();
+    }
+  }
+
+  function render(){applySet();drawChrome();app.textContent="";app.appendChild(view());}
+  document.getElementById("bell").addEventListener("click",function(){location.hash="#upozorneni";});
+  window.addEventListener("hashchange",function(){
+    if(route()==="upozorneni"){setTimeout(function(){read=state.notes.map(function(n){return n.id;});ss("mx_read",read);drawChrome();},1500);}
+    render();window.scrollTo(0,0);
+  });
+  render();
+})();
+</script>
+</body>
+</html>
